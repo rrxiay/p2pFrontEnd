@@ -2,8 +2,9 @@
     <div>
         <el-container>
             <el-aside style="width: 200px">
-                <el-menu class="m-sidebar"
-                         @select="handleSelect">
+                <el-menu
+                        class="m-sidebar"
+                        @select="handleSelect">
                     <el-menu-item index="1-1">
                         个人信息
                     </el-menu-item>
@@ -19,11 +20,11 @@
                 </el-menu>
             </el-aside>
 
-            <profile v-if="menuFlag === '1-1'"></profile>
-            <tosell v-if="menuFlag === '2-1'"></tosell>
-            <tobuy v-if="menuFlag === '2-2'"></tobuy>
-            <deals-done v-if="menuFlag === '2-3'"></deals-done>
-            <evaluate-credit v-if="menuFlag=== '3-1'"></evaluate-credit>
+            <profile v-if="menuFlag === '1-1'"/>
+            <tosell v-if="menuFlag === '2-1'"/>
+            <tobuy v-if="menuFlag === '2-2'"/>
+            <deals-done v-if="menuFlag === '2-3'"/>
+            <evaluate-credit v-if="menuFlag=== '3-1'"/>
 
         </el-container>
     </div>
@@ -37,35 +38,35 @@
   import evaluateCredit from '../common/UserCenterEvaluateCredit';
 
   export default {
-    name: 'main-user',
+    name: 'MainUser',
     components: {dealsDone, profile, tobuy, tosell, evaluateCredit},
+    data () {
+      return {
+        menuFlag: '1-1'
+      };
+    },
+    beforeMount () {
+      if (this.$store.state.islogin) {
+        const user = localStorage.getItem('user');
+        if (user.role === 'user') {
+          return;
+        }
+      }
+      // this.$router.push('/index');
+    },
     methods: {
 
       handleSelect (index) {
         // eslint-disable-next-line
         this.menuFlag = index;
       }
-    },
-    beforeMount(){
-      if(this.$store.state.islogin){
-        const user=localStorage.getItem('user');
-        if(user.role==='user'){
-           return;
-        }
-      }
-      // this.$router.push('/index');
-    },
-    data () {
-      return {
-        menuFlag: '1-1'
-      };
     }
   };
 </script>
 
 <style lang="scss" scoped>
     .el-aside {
-        height: available;
+        min-height: 100vh;
         background-color: white;
         .el-menu {
             position: fixed;

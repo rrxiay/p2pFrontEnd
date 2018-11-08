@@ -1,8 +1,16 @@
 <template>
-    <div class="admin-review-buy" style="width: 100%">
-        <h1>管理员审核购买</h1>
-        <basic-table :title="'购买列表'" :data="tableData" :labels="labels"></basic-table>
 
+    <div class="admin-review-buy" style="width: 100%">
+
+        <basic-table
+                :title="title"
+                :labels="label"
+                :tabledata="tableData"
+                :totalElements="totalElements"
+                :review="true"
+                @checked="checked"
+                @currentChange="handelCurrentChange"
+        />
 
     </div>
 </template>
@@ -11,40 +19,99 @@
   /* eslint-disable */
   import basicTable from '../common/BasicTableView';
   import api from '../../api/api';
+  import utils from '../../utils';
 
   export default {
     name: 'admin-review-buy',
     components: {basicTable},
     beforeMount () {
-
-
+      //获取数据
+      this.loadData();
     },
     data () {
       return {
-        labels: {
-          userName: '购买人',
-          sell: '姓名',
-          address: '地址'
+        label: {
+          transactionId:'交易id',
+          buyName: '贷款目的',
+          interest: '利率',
+          moneyNum: '总额(元)',
+          period: '周期（天）',
+          repaymentType: '还款方式',
+          transactionTime: '交易时间',
+          buyStatus: '贷款审核'
         },
-        tableData: [
-          {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
+        tableData: null,
+        requestData: null,
+        totalElements: 0,
+        title: '待审核贷款',
+        pageNow: 1,
+        pageSize: 10
+
       };
+    },
+    methods: {
+      parseData (aRecord) {
+        aRecord.transactionTime = utils.unixTime2YYYYMMDD(aRecord.transactionTime);
+        aRecord.interest = aRecord.interest + '%';
+        if (aRecord.buyStatus === 'N') {
+          aRecord.buyStatus = '未审核';
+        }
+        return aRecord;
+      },
+      loadData (str) {
+        let data = {
+          pageNow: this.pageNow,
+          pageSize: this.pageSize,
+          buyStatus: 'N'
+        };
+
+        if (str !== undefined) {
+          data['buyName'] = str.trim();
+        }
+        api.getTansitionByPage(data).then(re => {
+
+          this.requestData = JSON.parse(JSON.stringify(re.data.data.content));
+          console.log(this.requestData);
+          this.tableData = re.data.data.content.map(this.parseData);
+          this.totalElements = re.data.data.totalElements;
+        }).catch(e => {
+          console.log(e);
+        });
+      },
+      checked (comment, row) {
+        console.log(comment, row);
+        let data = this.requestData.filter(x => x.transactionId === row.transactionId)[0];
+        if(comment==='pass'){
+          data['']
+        }
+        data.status = comment;
+        api.updateTransation(data).then(re => {
+          console.log(re);
+          if(re.data.code===0){
+            this.$message({
+              message:'操作成功',
+              type:'success'
+            })
+            if(comment==='pass'){
+              row.buyStatus='通过';
+            }else{
+              row.buyStatus='拒绝';
+            }
+          }else{
+            this.message({
+              message:'操作失败',
+              type:'fail',
+            })
+          }
+        }).catch(e => {
+          console.log(e);
+        });
+      },
+      handelCurrentChange (val) {
+        this.pageNow = val;
+        this.loadData();
+      }
+
     }
   };
 </script>

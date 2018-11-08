@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <global-header></global-header>
-        <global-main></global-main>
-        <global-footer></global-footer>
+        <global-header/>
+        <global-main/>
+        <global-footer/>
     </div>
 </template>
 
@@ -12,25 +12,22 @@
   import Footer from './components/global/Footer';
 
   export default {
-    name: 'app',
+    name: 'App',
     components: {
       GlobalHeader: Header,
       GlobalMain: Main,
       GlobalFooter: Footer
     },
-    props: {
-      msg: 123
+    props: {},
+    data () {
+      return {};
     },
     methods: {
       changeRoute (path) {
         this.$router.push(path);
       }
-    },
-    data () {
-      return {};
     }
   };
-
 
 </script>
 

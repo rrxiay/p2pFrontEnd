@@ -5,14 +5,16 @@
 </template>
 
 <script>
-    export default {
-        name: "global-footer"
-    }
+  export default {
+    name: 'GlobalFooter'
+  };
 </script>
 
 <style lang="scss" scoped>
     .g-footer {
         position: absolute;
+        display: flow-root;
+
         width: 100%;
         bottom: 0;
         left: 0;
