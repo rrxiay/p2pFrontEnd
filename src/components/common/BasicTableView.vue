@@ -80,6 +80,19 @@
 
 
 
+                <el-table-column
+                        v-if="payBackBtn"
+                        fixed="right"
+                        width="150"
+                        label="操作"
+                        align="center">
+                    <template slot-scope="scope">
+                        <el-button type="success" size="mini" @click="payBack(scope.row,scope)">
+                            还款
+                        </el-button>
+                    </template>
+                </el-table-column>
+
             </el-table>
         </div>
         <div class="u-pagination-block">
@@ -125,7 +138,7 @@
                     <el-input type="number"></el-input>
                 </el-form-item>
                 <el-form-item label="出借原因">
-                    <el-input v-model="authDialog.buyName"></el-input>
+                    <el-input v-model="authDialog.sellName"></el-input>
                 </el-form-item>
                 <el-form-item label="还款方式">
                     <el-select v-model="authDialog.repaymentType">
@@ -157,7 +170,7 @@
                     <el-input v-model="borrowDialog.period"></el-input>
                 </el-form-item>
                 <el-form-item label="借款目的">
-                    <el-input v-model="borrowDialog.sellName"></el-input>
+                    <el-input v-model="borrowDialog.buyName"></el-input>
                 </el-form-item>
                 <el-form-item label="还款方式">
                     <el-select v-model="borrowDialog.repaymentType">
@@ -205,7 +218,8 @@
         type: Number,
         default: 10
       },
-      sellOrBuy: String
+      sellOrBuy: String,
+      payBackBtn: Boolean
     },
     data () {
       return {
@@ -241,14 +255,14 @@
           interest: 0,
           period: 0,
           repaymentType: '',
-          buyName: ''
+          sellName: ''
         },
         borrowDialog: {
           moneyNum: 0,
           interest: 0,
           period: 0,
           repaymentType: '',
-          sellName: ''
+          buyName: ''
         }
       };
     },
@@ -302,6 +316,9 @@
       handleConfirmBorrow () {
         this.$emit('Borrow', this.borrowDialog);
         this.dialogBorrowVisible = false;
+      },
+      payBack (row, scope) {
+        this.$emit('payBack', row, scope);
       }
     }
 
