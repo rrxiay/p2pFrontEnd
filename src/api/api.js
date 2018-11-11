@@ -40,7 +40,7 @@ const apiDes = [
     fun: 'getAllUser',
     url: '/userInformation/getAll',
     method: 'post',
-    params: ['pageNow','pageSize']
+    params: ['pageNow', 'pageSize']
   }, {
     // 新增贷款
     fun: 'addSell',
@@ -119,28 +119,96 @@ const apiDes = [
     url: '/transection/update.do',
     method: 'post',
     parmas: ['transactionId']
-  },{
+  }, {
     //获得总购或总贷的金额
     fun: 'getMoney',
     url: '/statistics/getMoney',
     method: 'post',
-    parmas: ['type','period']
+    parmas: ['type', 'period']
   }, {
     //获得一段时间的累计金额
     fun: 'getMoneyByTime',
-    url: "/statistics/getStatistic",
+    url: '/statistics/getStatistic',
     method: 'post',
     params: ['type', 'period', 'startTime', 'endTime']
+  }, {
+    fun: 'getSellByPage',
+    url: '/transection/getSellByPage.do',
+    method: 'post',
+    parmas: ['pageNow', 'pageSize']
+  }, {
+    fun: 'getBuyByPage',
+    url: '/transection/getBuyByPage.do',
+    method: 'post',
+    parmas: ['pageNow', 'pageSize']
+  }, {
+    fun: 'selectOne',
+    url: '/transection/selectOne.do',
+    method: 'post',
+    parmas: ['pageNow', 'pageSize', 'userId']
+  },
+  {
+    fun: 'selectTwo',
+    url: '/transection/selectTwo.do',
+    method: 'post',
+    parmas: ['pageNow', 'pageSize', 'userId']
+  },
+  {
+    fun: 'selectThree',
+    url: '/transection/selectThree.do',
+    method: 'post',
+    parmas: ['pageNow', 'pageSize', 'userId']
+  }
+  , {
+    fun: 'selectFour',
+    url: '/transection/selectFour.do',
+    method: 'post',
+    parmas: ['pageNow', 'pageSize', 'userId']
+  }, {
+    fun: 'getAssets',
+    url: '/asset/getByUserId',
+    method: 'post',
+    params: ['userId']
+  }, {
+    fun: 'insertAsset',
+    url: '/asset/insert',
+    method: 'post',
+    parmas: ['userId', 'assessCertification', 'assessmenValue', 'assetType']
+  }, {
+    fun: 'deleteAsset',
+    url: '/asset/delete',
+    method: 'post',
+    params: ['assetId']
+  }, {
+    fun: 'updateAsset',
+    url: '/asset/update',
+    method: 'post',
+    params: ['assetId']
+  }, {
+    fun: 'getCards',
+    url: '/card/getByUserId',
+    method: 'post',
+    params: ['userId']
   },{
-    fun:'getSellByPage',
-    url:'/transection/getSellByPage.do',
+    fun:'insertCard',
+    url:'/card/insert',
     method:'post',
-    parmas:['pageNow','pageSize']
+    params:['userId','cardNum']
   },{
-    fun:'getBuyByPage',
-    url:'/transection/getBuyByPage.do',
+    fun:'deleteCard',
+    url:'/card/delete',
     method:'post',
-    parmas:['pageNow','pageSize']
+    params:['cardId']
+  },{
+    fun:'getPersonCredit',
+    url:'/userInformation/getPersonCredit',
+    method:'post',
+    params:['userId']
+  },{
+    fun:'changeOO',
+    url:'/status/changeOO',
+    method:'post',
+    params:['transactionId']
   }
 ];
 
